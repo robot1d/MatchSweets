@@ -50,7 +50,7 @@ public class GameSweet : MonoBehaviour
     {
         get { return coloredComponent; }
     }
-
+    //是否可以移动
     public bool CanMove()
     {
         return moveComponent != null;
