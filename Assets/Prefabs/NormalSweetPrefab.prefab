@@ -38,8 +38,8 @@ GameObject:
   - component: {fileID: 114551039711947966}
   - component: {fileID: 114125996282491358}
   - component: {fileID: 114627058157904258}
-  - component: {fileID: 61688891333668538}
   - component: {fileID: 95961195223023762}
+  - component: {fileID: 61184901027816240}
   m_Layer: 0
   m_Name: NormalSweetPrefab
   m_TagString: Untagged
@@ -53,7 +53,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1838915717409444}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -74,7 +74,7 @@ Transform:
   m_Father: {fileID: 4153067132325320}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61688891333668538
+--- !u!61 &61184901027816240
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -97,7 +97,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
 --- !u!95 &95961195223023762
 Animator:
