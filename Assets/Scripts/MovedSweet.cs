@@ -12,7 +12,7 @@ public class MovedSweet : MonoBehaviour
     {
         sweet = GetComponent<GameSweet>();
     }
-
+    //移动方法,调用协程使移动时更加顺滑
     public void Move(int newX, int newY,float time)
     {
         if (moveCoroutine != null)
