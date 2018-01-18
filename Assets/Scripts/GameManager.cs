@@ -276,15 +276,15 @@ public class GameManager : MonoBehaviour
             //完成匹配的列表
             List<GameSweet> finishedMatchingSweets = new List<GameSweet>();
 
-            //行匹配
-            matchLineSweets.Add(sweet);
+            #region 行匹配
+            matchRowSweets.Add(sweet);
             //0表示往左,1表示往右
             for (int i = 0; i <= 1; i++)
             {
                 for (int xDistance = 0; xDistance < xColumn; xDistance++)
                 {
                     int x;
-                    if (i==0)//往左移动
+                    if (i == 0)//往左移动
                     {
                         x = newX - xDistance;
                     }
@@ -292,12 +292,12 @@ public class GameManager : MonoBehaviour
                     {
                         x = newX + xDistance;
                     }
-                    if (x<0||x>=xColumn)//如果超出范围,推出当前循环
+                    if (x < 0 || x >= xColumn)//如果超出范围,推出当前循环
                     {
                         break;
                     }
                     //如果左边的块是标准快,并且与当前块的类型一样
-                    if (sweets[x,newY].CanColor()&&sweets[x,newY].ColoredComponent.Clolr==color)
+                    if (sweets[x, newY].CanColor() && sweets[x, newY].ColoredComponent.Clolr == color)
                     {
                         matchRowSweets.Add(sweets[x, newY]);
                     }
@@ -308,7 +308,7 @@ public class GameManager : MonoBehaviour
                 }
             }
             //检查当前行数列的数值是否大于3
-            if (matchRowSweets.Count>=3)
+            if (matchRowSweets.Count >= 3)
             {
                 foreach (GameSweet item in matchRowSweets)
                 {
@@ -316,10 +316,57 @@ public class GameManager : MonoBehaviour
                 }
             }
             //如果匹配的个数大于3,返回完成匹配的集合
-            if (finishedMatchingSweets.Count>=3)
+            if (finishedMatchingSweets.Count >= 3)
             {
                 return finishedMatchingSweets;
             }
+            #endregion
+
+            #region 列匹配
+            matchLineSweets.Add(sweet);
+            //0表示往左,1表示往右
+            for (int i = 0; i <= 1; i++)
+            {
+                for (int yDistance = 0; yDistance < xColumn; yDistance++)
+                {
+                    int y;
+                    if (i == 0)//往左移动
+                    {
+                        y = newY - yDistance;
+                    }
+                    else//往右移动
+                    {
+                        y = newY + yDistance;
+                    }
+                    if (y < 0 || y >= yRow)//如果超出范围,推出当前循环
+                    {
+                        break;
+                    }
+                    //如果左边的块是标准快,并且与当前块的类型一样
+                    if (sweets[newX, y].CanColor() && sweets[newX, y].ColoredComponent.Clolr == color)
+                    {
+                        matchLineSweets.Add(sweets[newX, y]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            //检查当前行数列的数值是否大于3
+            if (matchLineSweets.Count >= 3)
+            {
+                foreach (GameSweet item in matchLineSweets)
+                {
+                    finishedMatchingSweets.Add(item);
+                }
+            }
+            //如果匹配的个数大于3,返回完成匹配的集合
+            if (finishedMatchingSweets.Count >= 3)
+            {
+                return finishedMatchingSweets;
+            }
+            #endregion
         }
         return null;
     }
