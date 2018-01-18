@@ -229,19 +229,30 @@ public class GameManager : MonoBehaviour
                (sweet1.Y == sweet2.Y && Mathf.Abs(sweet1.X - sweet2.X) == 1);
     }
 
-    //交换两甜品
+    //交换两甜品(添加不符合条件回退功能)
     private void ExchangeSweets(GameSweet sweet1, GameSweet sweet2)
     {
         if (sweet1.CanMove() && sweet2.CanMove())
         {
             sweets[sweet1.X, sweet1.Y] = sweet2;
             sweets[sweet2.X, sweet2.Y] = sweet1;
-
+            //两个糖果先进行交换
             int TempX = sweet1.X;
             int TempY = sweet1.Y;
-
             sweet1.MoveComponent.Move(sweet2.X, sweet2.Y, fileTime);
             sweet2.MoveComponent.Move(TempX, TempY, fileTime);
+            //如果横向和纵向交换后都没有可消除的糖果,交换位置重新归位
+            if (MatchSweet(sweet1,sweet2.X,sweet2.Y)!=null&&MatchSweet(sweet2,sweet1.X,sweet1.Y)!=null)
+            {
+
+
+            }
+            else
+            {
+                sweet1.MoveComponent.Move(sweet2.X, sweet2.Y, fileTime);
+                sweet2.MoveComponent.Move(TempX, TempY, fileTime);
+            }
+            
         }
     }
 
