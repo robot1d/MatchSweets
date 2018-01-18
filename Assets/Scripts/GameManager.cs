@@ -262,4 +262,65 @@ public class GameManager : MonoBehaviour
             ExchangeSweets(pressedSweet, enterSweet);
         }
     }
+
+    //匹配方法
+    public List<GameSweet> MatchSweet(GameSweet sweet, int newX, int newY)
+    {
+        if (sweet.CanColor())//如果可以正常的甜品甜品
+        {
+            ColorSweet.ColorType color = sweet.ColoredComponent.Clolr;
+            //行列表
+            List<GameSweet> matchRowSweets = new List<GameSweet>();
+            //列列表
+            List<GameSweet> matchLineSweets = new List<GameSweet>();
+            //完成匹配的列表
+            List<GameSweet> finishedMatchingSweets = new List<GameSweet>();
+
+            //行匹配
+            matchLineSweets.Add(sweet);
+            //0表示往左,1表示往右
+            for (int i = 0; i <= 1; i++)
+            {
+                for (int xDistance = 0; xDistance < xColumn; xDistance++)
+                {
+                    int x;
+                    if (i==0)//往左移动
+                    {
+                        x = newX - xDistance;
+                    }
+                    else//往右移动
+                    {
+                        x = newX + xDistance;
+                    }
+                    if (x<0||x>=xColumn)//如果超出范围,推出当前循环
+                    {
+                        break;
+                    }
+                    //如果左边的块是标准快,并且与当前块的类型一样
+                    if (sweets[x,newY].CanColor()&&sweets[x,newY].ColoredComponent.Clolr==color)
+                    {
+                        matchRowSweets.Add(sweets[x, newY]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            //检查当前行数列的数值是否大于3
+            if (matchRowSweets.Count>=3)
+            {
+                foreach (GameSweet item in matchRowSweets)
+                {
+                    finishedMatchingSweets.Add(item);
+                }
+            }
+            //如果匹配的个数大于3,返回完成匹配的集合
+            if (finishedMatchingSweets.Count>=3)
+            {
+                return finishedMatchingSweets;
+            }
+        }
+        return null;
+    }
 }

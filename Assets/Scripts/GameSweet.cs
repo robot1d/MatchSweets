@@ -94,9 +94,6 @@ public class GameSweet : MonoBehaviour
     {
         gameManager.ReleaseSweet();
     }
-    private void Init()
-    {
-        Debug.Log("dd");
-    }
+    
 
 }
