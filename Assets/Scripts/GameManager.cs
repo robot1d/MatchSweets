@@ -234,25 +234,26 @@ public class GameManager : MonoBehaviour
     {
         if (sweet1.CanMove() && sweet2.CanMove())
         {
-            sweets[sweet1.X, sweet1.Y] = sweet2;
-            sweets[sweet2.X, sweet2.Y] = sweet1;
-            //两个糖果先进行交换
-            int TempX = sweet1.X;
-            int TempY = sweet1.Y;
-            sweet1.MoveComponent.Move(sweet2.X, sweet2.Y, fileTime);
-            sweet2.MoveComponent.Move(TempX, TempY, fileTime);
-            //如果横向和纵向交换后都没有可消除的糖果,交换位置重新归位
-            if (MatchSweet(sweet1,sweet2.X,sweet2.Y)!=null&&MatchSweet(sweet2,sweet1.X,sweet1.Y)!=null)
+            ////如果横向和纵向交换后都没有可消除的糖果,交换位置重新归位
+            if (MatchSweet(sweet1,sweet2.X,sweet2.Y)!=null||MatchSweet(sweet2,sweet1.X,sweet1.Y)!=null)
             {
-
-
+                int TempX = sweet1.X;
+                int TempY = sweet1.Y;
+                sweet1.MoveComponent.Move(sweet2.X, sweet2.Y, fileTime);
+                sweet2.MoveComponent.Move(TempX, TempY, fileTime);
+                sweets[sweet1.X, sweet1.Y] = sweet2;
+                sweets[sweet2.X, sweet2.Y] = sweet1;
             }
             else
             {
+                //两个糖果先进行交换
+                int TempX = sweet1.X;
+                int TempY = sweet1.Y;
                 sweet1.MoveComponent.Move(sweet2.X, sweet2.Y, fileTime);
                 sweet2.MoveComponent.Move(TempX, TempY, fileTime);
+                StartCoroutine(ClearChangge(sweet2, sweet1));
             }
-            
+
         }
     }
 
@@ -292,7 +293,7 @@ public class GameManager : MonoBehaviour
             //0表示往左,1表示往右
             for (int i = 0; i <= 1; i++)
             {
-                for (int xDistance = 0; xDistance < xColumn; xDistance++)
+                for (int xDistance = 1; xDistance < xColumn; xDistance++)
                 {
                     int x;
                     if (i == 0)//往左移动
@@ -303,7 +304,7 @@ public class GameManager : MonoBehaviour
                     {
                         x = newX + xDistance;
                     }
-                    if (x < 0 || x >= xColumn)//如果超出范围,推出当前循环
+                    if (x < 0 || x >= xColumn)//如果超出范围,退出当前循环
                     {
                         break;
                     }
@@ -338,14 +339,14 @@ public class GameManager : MonoBehaviour
             //0表示往左,1表示往右
             for (int i = 0; i <= 1; i++)
             {
-                for (int yDistance = 0; yDistance < xColumn; yDistance++)
+                for (int yDistance = 1; yDistance < xColumn; yDistance++)
                 {
-                    int y;
-                    if (i == 0)//往左移动
+                    int y ;
+                    if (i == 0)//往下移动
                     {
                         y = newY - yDistance;
                     }
-                    else//往右移动
+                    else//往下移动
                     {
                         y = newY + yDistance;
                     }
@@ -353,7 +354,7 @@ public class GameManager : MonoBehaviour
                     {
                         break;
                     }
-                    //如果左边的块是标准快,并且与当前块的类型一样
+                    //如果上下边的块是标准快,并且与当前块的类型一样
                     if (sweets[newX, y].CanColor() && sweets[newX, y].ColoredComponent.Clolr == color)
                     {
                         matchLineSweets.Add(sweets[newX, y]);
@@ -380,5 +381,14 @@ public class GameManager : MonoBehaviour
             #endregion
         }
         return null;
+    }
+
+    IEnumerator ClearChangge(GameSweet sweet1,GameSweet sweet2)
+    {
+        yield return new WaitForSeconds(0.3f);
+        int TempX = sweet1.X;
+        int TempY = sweet1.Y;
+        sweet1.MoveComponent.Move(sweet2.X, sweet2.Y, fileTime);
+        sweet2.MoveComponent.Move(TempX, TempY, fileTime);
     }
 }
