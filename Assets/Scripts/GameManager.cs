@@ -278,7 +278,7 @@ public class GameManager : MonoBehaviour
     //匹配方法
     public List<GameSweet> MatchSweet(GameSweet sweet, int newX, int newY)
     {
-        if (sweet.CanColor())//如果可以正常的甜品甜品
+        if (sweet.CanColor())//如果可以正常的甜品
         {
             ColorSweet.ColorType color = sweet.ColoredComponent.Clolr;
             //行列表
@@ -295,7 +295,7 @@ public class GameManager : MonoBehaviour
             {
                 for (int xDistance = 1; xDistance < xColumn; xDistance++)
                 {
-                    int x;
+                    int x = 0;
                     if (i == 0)//往左移动
                     {
                         x = newX - xDistance;
@@ -322,9 +322,52 @@ public class GameManager : MonoBehaviour
             //检查当前行数列的数值是否大于3
             if (matchRowSweets.Count >= 3)
             {
-                foreach (GameSweet item in matchRowSweets)
+                for (int i = 0; i < matchRowSweets.Count; i++)
                 {
-                    finishedMatchingSweets.Add(item);
+                    if (i == 0)
+                    {
+                        for (int j = 0; j <= 1; j++)
+                        {
+                            for (int yDistance = 0; yDistance < xColumn; yDistance++)
+                            {
+                                int y;
+                                if (j == 0)//往下移动
+                                {
+                                    y = newY - yDistance;
+                                }
+                                else//往下移动
+                                {
+                                    y = newY + yDistance;
+                                }
+                                if (y < 0 || y >= yRow)//如果超出范围,推出当前循环
+                                {
+                                    break;
+                                }
+                                //如果上下边的块是标准快,并且与当前块的类型一样
+                                if (sweets[newX, y].CanColor() && sweets[newX, y].ColoredComponent.Clolr == color)
+                                {
+                                    matchLineSweets.Add(sweets[newX, y]);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    finishedMatchingSweets.Add(matchRowSweets[i]);
+                }
+                if (matchLineSweets.Count >=3)
+                {
+                    foreach (GameSweet item in matchLineSweets)
+                    {
+                        finishedMatchingSweets.Add(item);
+                    }
+                    return finishedMatchingSweets;
+                }
+                foreach (var item in finishedMatchingSweets)
+                {
+                    Destroy(item.gameObject);
                 }
             }
             //如果匹配的个数大于3,返回完成匹配的集合
@@ -334,12 +377,12 @@ public class GameManager : MonoBehaviour
             }
             #endregion
 
-            #region 列匹配
+           /* #region 列匹配
             matchLineSweets.Add(sweet);
-            //0表示往左,1表示往右
+            //0表示往上,1表示往下
             for (int i = 0; i <= 1; i++)
             {
-                for (int yDistance = 1; yDistance < xColumn; yDistance++)
+                for (int yDistance = 1; yDistance < yRow; yDistance++)
                 {
                     int y ;
                     if (i == 0)//往下移动
@@ -379,6 +422,7 @@ public class GameManager : MonoBehaviour
                 return finishedMatchingSweets;
             }
             #endregion
+    */
         }
         return null;
     }
